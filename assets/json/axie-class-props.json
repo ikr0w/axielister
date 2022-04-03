@@ -1,0 +1,82 @@
+{
+    "aquatic": {
+        "color":                "#00b8ce",
+        "emoji":                "<:aquatic:959283850201157652>",
+        "listingChannelId":     "899257844027764736",
+        "salesChannelId":       "899258179387523112",
+        "baseStats":            { "hp": 39, "speed": 39, "skill": 35, "morale": 27 },
+        "addionalStats":        { "hp": 1,  "speed": 3,  "skill": 0,  "morale": 0  }
+    },
+
+    "beast": {
+        "color":                "#ffb812",
+        "emoji":                "<:beast:959283850205352009>",
+        "listingChannelId":     "899257867410997268",
+        "salesChannelId":       "899258201176940584",
+        "baseStats":            { "hp": 31, "speed": 35, "skill": 31, "morale": 43 },
+        "addionalStats":        { "hp": 0,  "speed": 1,  "skill": 0,  "morale": 3  }
+    },
+
+    "bird": {
+        "color":                "#ff8bbd",
+        "emoji":                "<:bird:959283850289221652>",
+        "listingChannelId":     "899257884637007872",
+        "salesChannelId":       "899258222895038535",
+        "baseStats":            { "hp": 27, "speed": 43, "skill": 35, "morale": 35 },
+        "addionalStats":        { "hp": 0,  "speed": 3,  "skill": 0,  "morale": 1  }
+    },
+
+    "bug": {
+        "color":                "#ff5341",
+        "emoji":                "<:bug:959283850322804826>",
+        "listingChannelId":     "899257899715538966",
+        "salesChannelId":       "899258246655799296",
+        "baseStats":            { "hp": 35, "speed": 31, "skill": 35, "morale": 39 },
+        "addionalStats":        { "hp": 1,  "speed": 0,  "skill": 0,  "morale": 3}
+    },
+
+    "plant": {
+        "color":                "#6cc000",
+        "emoji":                "<:plant:959283850360524860>",
+        "listingChannelId":     "899257920271831040",
+        "salesChannelId":       "899258273725816852",
+        "baseStats":            { "hp": 43, "speed": 31, "skill": 31, "morale": 35 },
+        "addionalStats":        { "hp": 3,  "speed": 0, "skill": 0, "morale": 1}
+    },
+
+    "reptile": {
+        "color":                "#dc8be4",
+        "emoji":                "<:reptile:959283850272440320>",
+        "listingChannelId":     "899257947702591518",
+        "salesChannelId":       "899258296458965035",
+        "baseStats":            { "hp": 39, "speed": 35, "skill": 31, "morale": 35 },
+        "addionalStats":        { "hp": 3,  "speed": 1,  "skill": 0,  "morale": 0  }
+    },
+
+    "mech": {
+        "color":                "#c6bdd4",
+        "emoji":                "<:mech:959283850188570635>",
+        "listingChannelId":     "899258023707541515",
+        "salesChannelId":       "899258365853708339",
+        "baseStats":            { "hp": 31, "speed": 39, "skill": 43, "morale": 27 },
+        "addionalStats":        { "hp": 0,  "speed": 0,  "skill": 0,  "morale": 0  }
+    },
+
+    "dusk": {
+        "color":                "#129092",
+        "emoji":                "<:dusk:959283850306023424>",
+        "listingChannelId":     "899257968405647421",
+        "salesChannelId":       "899258319724748821",
+        "baseStats":            { "hp": 43, "speed": 39, "skill": 27, "morale": 31 },
+        "addionalStats":        { "hp": 0,  "speed": 0,  "skill": 0,  "morale": 0  }
+    },
+    
+    "dawn": {
+        "color":                "#beceff",
+        "emoji":                "<:dawn:959283850230509579>",
+        "listingChannelId":     "899257991050706974",
+        "salesChannelId":       "899258337902854165",
+        "baseStats":            { "hp": 35, "speed": 39, "skill": 39, "morale": 27 },
+        "addionalStats":        { "hp": 0,  "speed": 0,  "skill": 0,  "morale": 0  }
+    }
+}

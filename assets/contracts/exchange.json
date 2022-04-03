@@ -1,0 +1,36 @@
+{
+    "address": "0x2da06d60bd413bcbb6586430857433bd9d3a4be4",
+    "abi": [
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_listingIndex",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getListing",
+            "outputs": [
+                {
+                    "internalType": "enum IExchange.TokenType[]",
+                    "name": "_tokenTypes",
+                    "type": "uint8[]"
+                },
+                {
+                    "internalType": "address[]",
+                    "name": "_tokenAddresses",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "uint256[]",
+                    "name": "_tokenNumbers",
+                    "type": "uint256[]"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ]
+}
