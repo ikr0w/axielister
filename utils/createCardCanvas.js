@@ -15,10 +15,10 @@ module.exports.createCardSetCanvas = async (cards) => {
 module.exports.createCardCanvas = async ({ id, iconId, skillName, defaultAttack, defaultDefense, defaultEnergy, description }) => {
 
     const [cardBase, cardIcon, cardAtk, cardDef] = await Promise.all([
-        canvas.loadImage(`./assets/images/cards/base/${id}.png`),
-        canvas.loadImage(`./assets/images/cards/effects/${iconId}.png`),
-        canvas.loadImage(`./assets/images/cards/bg/bg-${id.split('-')[0]}-atk.png`),
-        canvas.loadImage(`./assets/images/cards/bg/bg-${id.split('-')[0]}-def.png`)
+        canvas.loadImage(`./assets/images/classic_cards/base/${id}.png`),
+        canvas.loadImage(`./assets/images/classic_cards/effects/${iconId}.png`),
+        canvas.loadImage(`./assets/images/classic_cards/bg/bg-${id.split('-')[0]}-atk.png`),
+        canvas.loadImage(`./assets/images/classic_cards/bg/bg-${id.split('-')[0]}-def.png`)
     ])
 
     cardCanvas.beginPath()
