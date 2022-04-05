@@ -3,5 +3,6 @@
     "bot_activity": {
         "type": "WATCHING",
         "text": "Marketplace"
-    }
+    },
+    "version": "classic"
 }

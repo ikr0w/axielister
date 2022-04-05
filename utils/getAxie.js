@@ -1,9 +1,10 @@
 const { AxieGene, HexType } = require("agp-npm/dist/axie-gene")
-const axieClassProps = require('../assets/json/axie-class-props.json')
 const { axieContract, exchangeContract } = require('../app')
+const { version } = require('../config.json')
 const { createCardSetCanvas } = require('./createCardCanvas')
-const { createAxieCanvas } = require('./createAxieCanvas')
+const { createAxieCanvas, createOriginAxieCanvas } = require('./createAxieCanvas')
 const { address: axieContractAddress } = require('../assets/contracts/axie.json')
+const axieClassProps = require('../assets/json/axie-class-props.json')
 const cardsList = require('../assets/json/card-abilities.json')
 
 const cardsArray = Object.values(cardsList)
@@ -11,6 +12,7 @@ const parts = ['eyes', 'mouth', 'ears', 'horn', 'back', 'tail']
 const genes = ['d', 'r1', 'r2']
 const probabilities = { d: 0.375, r1: 0.09375, r2: 0.03125 }
 const max_quality = 6 * (probabilities.d + probabilities.r1 + probabilities.r2)
+const purityBonus = [0, 0, 1, 2, 4, 6, 8]
 
 module.exports.parseAxieData = async (listing) => {
     let axieId
@@ -22,6 +24,7 @@ module.exports.parseAxieData = async (listing) => {
     }
 
     const axieData = await axieContract.methods.axie(parseInt(axieId)).call().catch(error => console.trace(error))
+
     if (!axieData?.genes['x'] || axieData.genes['x'] == '0') return
 
     const gene_x = BigInt(axieData?.genes.x).toString(2).padStart(256, '0')
@@ -30,8 +33,8 @@ module.exports.parseAxieData = async (listing) => {
 
     const axieGene = new AxieGene(genes, HexType.Bit512)
 
-    const stats = this.getStats(axieGene._genes.cls, axieGene._genes)
-    const { quality, purity } = this.getQualityAndPureness(axieGene._genes.cls, axieGene._genes)
+    const stats = this.getStats(axieGene._genes)
+    const { quality, purity } = this.getQualityAndPureness(axieGene._genes)
     this.parseTraitsColors(axieGene._genes)
 
     let axie = {
@@ -45,7 +48,7 @@ module.exports.parseAxieData = async (listing) => {
         birthDate: axieData.birthDate,
         breedCount: axieData.breedCount,
         stage: axieData.stage,
-        traits: { ...axieGene._genes },
+        traits: axieGene._genes,
     }
 
     if (listing.decoded.method == 'createAuction') {
@@ -60,19 +63,26 @@ module.exports.parseAxieData = async (listing) => {
         axie = { bidPrice, ...axie }
     }
 
-    const cardSet = getCardSet(axie.traits)
-    const cardSetCanvas = await createCardSetCanvas(cardSet)
+    if (version == 'origin') {
+        axie['potentialPoints'] = this.getPotentialPoints(axie.traits)
 
-    axie['canvas'] = await createAxieCanvas(axie, cardSetCanvas)
+        axie['canvas'] = await createOriginAxieCanvas(axie)
+    } else {
+        const cardSet = getCardSet(axie.traits)
+        const cardSetCanvas = await createCardSetCanvas(cardSet)
+
+        axie['canvas'] = await createAxieCanvas(axie, cardSetCanvas)
+    }
+
     return axie
 }
 
-module.exports.getStats = (axieClass, axieTraits) => {
-    let stats = { ...axieClassProps[axieClass].baseStats }
+module.exports.getStats = (axieTraits) => {
+    let stats = { ...axieClassProps[axieTraits.cls].baseStats }
+
     for (const part of parts) {
-        // part class
-        const axiePart = axieTraits[part].d.cls
-        stats = Object.entries(axieClassProps[axiePart].addionalStats).reduce((acc, [key, value]) =>
+        const axiePartClass = axieTraits[part].d.cls
+        stats = Object.entries(axieClassProps[axiePartClass].addionalStats).reduce((acc, [key, value]) =>
             // if key is already in map1, add the values, otherwise, create new pair
             ({ ...acc, [key]: (acc[key] || 0) + value })
             , { ...stats })
@@ -81,24 +91,44 @@ module.exports.getStats = (axieClass, axieTraits) => {
     return stats
 }
 
-module.exports.getQualityAndPureness = (axieClass, axieTraits) => {
+module.exports.getPotentialPoints = (axieTraits) => {
+    let potentialPoints = {}
+
+    potentialPoints[axieTraits.cls] = 1
+
+    for (const part of parts) {
+        const partClass = axieTraits[part].d.cls
+        potentialPoints[partClass] = (potentialPoints[partClass] || 0) + 1
+    }
+
+    for (const [key, value] of Object.entries(potentialPoints)) {
+        potentialPoints[key] = value + purityBonus[value - 1]
+    }
+
+    return potentialPoints
+}
+
+module.exports.getQualityAndPureness = (axieTraits) => {
     let quality = 0
     let purity = 0
 
-    for (const i in parts) {
-        if (axieTraits[parts[i]].d.cls == axieClass) {
+    for (const part of parts) {
+        if (axieTraits[part].d.cls == axieTraits.cls) {
             quality += probabilities.d
             purity++
         }
-        if (axieTraits[parts[i]].r1.cls == axieClass) {
+
+        if (axieTraits[part].r1.cls == axieTraits.cls) {
             quality += probabilities.r1
         }
-        if (axieTraits[parts[i]].r2.cls == axieClass) {
+
+        if (axieTraits[part].r2.cls == axieTraits.cls) {
             quality += probabilities.r2
         }
     }
 
     quality = Math.round((quality / max_quality) * 100)
+
     return { quality, purity }
 }
 
